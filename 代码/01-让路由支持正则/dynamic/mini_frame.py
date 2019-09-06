@@ -58,8 +58,9 @@ def index():
     html = ""
     for line_info in stock_infos:
         html += tr_template % (
-        line_info[0], line_info[1], line_info[2], line_info[3], line_info[4], line_info[5], line_info[6], line_info[7],
-        line_info[1])
+            line_info[0], line_info[1], line_info[2], line_info[3], line_info[4], line_info[5], line_info[6],
+            line_info[7],
+            line_info[1])
 
     # content = re.sub(r"\{%content%\}", str(stock_infos), content)
     content = re.sub(r"\{%content%\}", html, content)
@@ -105,7 +106,7 @@ def center():
     html = ""
     for line_info in stock_infos:
         html += tr_template % (
-        line_info[0], line_info[1], line_info[2], line_info[3], line_info[4], line_info[5], line_info[6])
+            line_info[0], line_info[1], line_info[2], line_info[3], line_info[4], line_info[5], line_info[6])
 
     # content = re.sub(r"\{%content%\}", str(stock_infos), content)
     content = re.sub(r"\{%content%\}", html, content)

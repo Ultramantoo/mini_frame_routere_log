@@ -32,7 +32,7 @@ def index(ret):
     # my_stock_info = "哈哈哈哈 这是你的本月名称....."
     # content = re.sub(r"\{%content%\}", my_stock_info, content)
     # 创建Connection连接
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     # 获得Cursor对象
     cs = conn.cursor()
     cs.execute("select * from info;")
@@ -73,10 +73,10 @@ def center(ret):
     with open("./templates/center.html", encoding="utf-8") as f:
         content = f.read()
 
-    # my_stock_info = "这里是从mysql查询出来的数据。。。"
+    # my_stock_info = "Mysql。。。"
     # content = re.sub(r"\{%content%\}", my_stock_info, content)
     # 创建Connection连接
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     # 获得Cursor对象
     cs = conn.cursor()
     cs.execute(
@@ -123,7 +123,7 @@ def add_focus(ret):
     stock_code = ret.group(1)
 
     # 2. 判断试下是否有这个股票代码
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select * from info where code=%s;"""
     cs.execute(sql, (stock_code,))

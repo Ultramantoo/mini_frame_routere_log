@@ -28,13 +28,13 @@ def route(url):
 
 @route(r"/index.html")
 def index(ret):
-    with open("./templates/index.html") as f:
+    with open("./templates/index.html", encoding="utf-8") as f:
         content = f.read()
 
     # my_stock_info = "哈哈哈哈 这是你的本月名称....."
     # content = re.sub(r"\{%content%\}", my_stock_info, content)
     # 创建Connection连接
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     # 获得Cursor对象
     cs = conn.cursor()
     cs.execute("select * from info;")
@@ -65,20 +65,20 @@ def index(ret):
             line_info[1])
 
     # content = re.sub(r"\{%content%\}", str(stock_infos), content)
-    content = re.sub(r"\{%content%\}", html, content)
+    content = re.sub(r"{%content%}", html, content)
 
     return content
 
 
 @route(r"/center.html")
 def center(ret):
-    with open("./templates/center.html") as f:
+    with open("./templates/center.html", encoding="utf-8") as f:
         content = f.read()
 
     # my_stock_info = "这里是从mysql查询出来的数据。。。"
     # content = re.sub(r"\{%content%\}", my_stock_info, content)
     # 创建Connection连接
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     # 获得Cursor对象
     cs = conn.cursor()
     cs.execute(
@@ -127,7 +127,7 @@ def add_focus(ret):
     stock_code = ret.group(1)
 
     # 2. 判断试下是否有这个股票代码
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select * from info where code=%s;"""
     cs.execute(sql, (stock_code,))
@@ -162,7 +162,7 @@ def del_focus(ret):
     stock_code = ret.group(1)
 
     # 2. 判断试下是否有这个股票代码
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select * from info where code=%s;"""
     cs.execute(sql, (stock_code,))
@@ -199,11 +199,11 @@ def show_update_page(ret):
     stock_code = ret.group(1)
 
     # 2. 打开模板
-    with open("./templates/update.html") as f:
+    with open("./templates/update.html", encoding="utf-8") as f:
         content = f.read()
 
     # 3. 根据股票代码查询相关的备注信息
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select f.note_info from focus as f inner join info as i on i.id=f.info_id where i.code=%s;"""
     cs.execute(sql, (stock_code,))
@@ -212,8 +212,8 @@ def show_update_page(ret):
     cs.close()
     conn.close()
 
-    content = re.sub(r"\{%note_info%\}", note_info, content)
-    content = re.sub(r"\{%code%\}", stock_code, content)
+    content = re.sub(r"{%note_info%}", note_info, content)
+    content = re.sub(r"{%code%}", stock_code, content)
 
     return content
 
@@ -225,7 +225,7 @@ def save_update_page(ret):
     comment = ret.group(2)
     comment = urllib.parse.unquote(comment)
 
-    conn = connect(host='localhost', port=3306, user='root', password='mysql', database='stock_db', charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """update focus set note_info=%s where info_id = (select id from info where code=%s);"""
     cs.execute(sql, (comment, stock_code))

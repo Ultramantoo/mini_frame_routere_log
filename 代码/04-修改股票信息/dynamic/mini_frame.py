@@ -15,9 +15,12 @@ def route(url):
     def set_func(func):
         # URL_FUNC_DICT["/index.py"] = index
         URL_FUNC_DICT[url] = func
+
         def call_func(*args, **kwargs):
             return func(*args, **kwargs)
+
         return call_func
+
     return set_func
 
 
@@ -29,7 +32,7 @@ def index(ret):
     # my_stock_info = "哈哈哈哈 这是你的本月名称....."
     # content = re.sub(r"\{%content%\}", my_stock_info, content)
     # 创建Connection连接
-    conn = connect(host='localhost',port=3306,user='root',password='mysql',database='stock_db',charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     # 获得Cursor对象
     cs = conn.cursor()
     cs.execute("select * from info;")
@@ -54,13 +57,16 @@ def index(ret):
 
     html = ""
     for line_info in stock_infos:
-        html += tr_template % (line_info[0],line_info[1],line_info[2],line_info[3],line_info[4],line_info[5],line_info[6],line_info[7], line_info[1])
+        html += tr_template % (
+            line_info[0], line_info[1], line_info[2], line_info[3], line_info[4], line_info[5], line_info[6],
+            line_info[7],
+            line_info[1])
 
     # content = re.sub(r"\{%content%\}", str(stock_infos), content)
-    content = re.sub(r"\{%content%\}", html, content)
+    content = re.sub(r"{%content%}", html, content)
 
     return content
-     
+
 
 @route(r"/center.html")
 def center(ret):
@@ -70,10 +76,11 @@ def center(ret):
     # my_stock_info = "这里是从mysql查询出来的数据。。。"
     # content = re.sub(r"\{%content%\}", my_stock_info, content)
     # 创建Connection连接
-    conn = connect(host='localhost',port=3306,user='root',password='mysql',database='stock_db',charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     # 获得Cursor对象
     cs = conn.cursor()
-    cs.execute("select i.code,i.short,i.chg,i.turnover,i.price,i.highs,f.note_info from info as i inner join focus as f on i.id=f.info_id;")
+    cs.execute(
+        "select i.code,i.short,i.chg,i.turnover,i.price,i.highs,f.note_info from info as i inner join focus as f on i.id=f.info_id;")
     stock_infos = cs.fetchall()
     cs.close()
     conn.close()
@@ -98,24 +105,27 @@ def center(ret):
 
     html = ""
     for line_info in stock_infos:
-        html += tr_template % (line_info[0],line_info[1],line_info[2],line_info[3],line_info[4],line_info[5],line_info[6], line_info[0], line_info[0])
+        html += tr_template % (
+            line_info[0], line_info[1], line_info[2], line_info[3], line_info[4], line_info[5], line_info[6],
+            line_info[0],
+            line_info[0])
 
     # content = re.sub(r"\{%content%\}", str(stock_infos), content)
     content = re.sub(r"\{%content%\}", html, content)
 
     return content
 
+
 # 给路由添加正则表达式的原因：在实际开发时，url中往往会带有很多参数，例如/add/000007.html中000007就是参数，
 # 如果没有正则的话，那么就需要编写N次@route来进行添加 url对应的函数 到字典中，此时字典中的键值对有N个，浪费空间
 # 而采用了正则的话，那么只要编写1次@route就可以完成多个 url例如/add/00007.html /add/000036.html等对应同一个函数，此时字典中的键值对个数会少很多
 @route(r"/add/(\d+)\.html")
 def add_focus(ret):
-
     # 1. 获取股票代码
     stock_code = ret.group(1)
 
     # 2. 判断试下是否有这个股票代码
-    conn = connect(host='localhost',port=3306,user='root',password='mysql',database='stock_db',charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select * from info where code=%s;"""
     cs.execute(sql, (stock_code,))
@@ -146,12 +156,11 @@ def add_focus(ret):
 
 @route(r"/del/(\d+)\.html")
 def del_focus(ret):
-
     # 1. 获取股票代码
     stock_code = ret.group(1)
 
     # 2. 判断试下是否有这个股票代码
-    conn = connect(host='localhost',port=3306,user='root',password='mysql',database='stock_db',charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select * from info where code=%s;"""
     cs.execute(sql, (stock_code,))
@@ -192,7 +201,7 @@ def show_update_page(ret):
         content = f.read()
 
     # 3. 根据股票代码查询相关的备注信息
-    conn = connect(host='localhost',port=3306,user='root',password='mysql',database='stock_db',charset='utf8')
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """select f.note_info from focus as f inner join info as i on i.id=f.info_id where i.code=%s;"""
     cs.execute(sql, (stock_code,))
@@ -201,8 +210,8 @@ def show_update_page(ret):
     cs.close()
     conn.close()
 
-    content = re.sub(r"\{%note_info%\}", note_info, content)
-    content = re.sub(r"\{%code%\}", stock_code, content)
+    content = re.sub(r"{%note_info%}", note_info, content)
+    content = re.sub(r"{%code%}", stock_code, content)
 
     return content
 
@@ -212,8 +221,8 @@ def save_update_page(ret):
     """"保存修改的信息"""
     stock_code = ret.group(1)
     comment = ret.group(2)
-    
-    conn = connect(host='localhost',port=3306,user='root',password='mysql',database='stock_db',charset='utf8')
+
+    conn = connect(host='localhost', port=3306, user='root', password='Qazqaz123', database='stock_db', charset='utf8')
     cs = conn.cursor()
     sql = """update focus set note_info=%s where info_id = (select id from info where code=%s);"""
     cs.execute(sql, (comment, stock_code))
@@ -226,7 +235,7 @@ def save_update_page(ret):
 
 def application(env, start_response):
     start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
-    
+
     file_name = env['PATH_INFO']
     # file_name = "/index.py"
 
@@ -258,4 +267,3 @@ def application(env, start_response):
 
     except Exception as ret:
         return "产生了异常：%s" % str(ret)
-
